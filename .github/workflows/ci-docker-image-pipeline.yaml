@@ -3,7 +3,7 @@ name: "Frontend: Docker: Build"
 on:
   push:
     branches:
-      - "master"
+      - "main"
 
 jobs:
   test_build_push:
