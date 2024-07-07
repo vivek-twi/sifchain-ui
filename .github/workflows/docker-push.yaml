@@ -29,13 +29,16 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.appName }}
-          path: /tmp
+          #name: ${{ inputs.appName }}
+          name: app
+          path: /tmp/package.tar
       - name: Push Docker image
         run: |
-          docker load --input /tmp/${{ inputs.appName }}.tar
+          #docker load --input /tmp/${{ inputs.appName }}.tar
+          docker load --input /tmp/package.tar
           docker image ls -a
-          docker push --all-tags ghcr.io/${{ github.repository }}/${{ inputs.appName }}
+          #docker push --all-tags ghcr.io/${{ github.repository }}/${{ inputs.appName }}
+          docker push --all-tags ghcr.io/vivek-twi/sifchain-ui
 #      - name: 'Setup yq'
 #        uses: dcarbone/install-yq-action@v1.1.1
 #      - name: Update Image Tag for dev env
