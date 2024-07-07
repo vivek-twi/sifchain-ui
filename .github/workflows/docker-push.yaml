@@ -1,6 +1,6 @@
 name: Publish Docker Image
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
   workflow_call:
     inputs:
       appName:
