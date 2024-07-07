@@ -26,4 +26,4 @@ FROM flashspys/nginx-static
 RUN apk update && apk upgrade
 RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder  /app/dist /static
+#COPY --from=builder  /app/dist /static
