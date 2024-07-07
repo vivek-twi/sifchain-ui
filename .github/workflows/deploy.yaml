@@ -1,0 +1,51 @@
+name: Deploy to Environment
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - dev
+          - qa
+          - uat
+          - prod
+      appName:
+        description: 'Name of the Application - to be deployed'
+        required: true
+        type: string
+jobs:
+  deploy-environment:
+    name: Deploy to ${{ inputs.environment }} Environment
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Install kubectl
+        uses: actions-hub/kubectl@master
+        with:
+          version: 'latest'
+
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: 'v3.5.4' # specify the version you want to use
+
+      # update kubeconfig per env
+      - name: Set up Kubeconfig
+        run: |
+          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
+
+      - name: Helm deploy
+        run: |
+          helm upgrade --install my-release ./helm-chart-directory --namespace my-namespace
