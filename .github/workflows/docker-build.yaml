@@ -48,6 +48,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.appName }}
+          #name: ${{ inputs.appName }}
+          name: app
           #path: /tmp/${{ inputs.appName }}.tar
           path: /tmp/package.tar
