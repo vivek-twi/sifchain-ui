@@ -18,6 +18,7 @@ WORKDIR /ui
 RUN yarn
 
 COPY . /ui
+RUN yarn install
 RUN yarn core:build
 RUN yarn app:build
 
