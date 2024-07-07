@@ -31,7 +31,7 @@ jobs:
         with:
           #name: ${{ inputs.appName }}
           name: app
-          path: /tmp/package.tar
+          path: /tmp
       - name: Push Docker image
         run: |
           #docker load --input /tmp/${{ inputs.appName }}.tar
