@@ -21,7 +21,7 @@ jobs:
   container-scan:
     name: Run Docker Container Scan
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }} # Run only for Main branch
+    #if: ${{ github.ref == 'refs/heads/main' }} # Run only for Main branch
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -36,12 +36,14 @@ jobs:
       - name: Download Docker image
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.appName }}
+          #name: ${{ inputs.appName }}
+          name: app
           path: /tmp
 
       - name: Load Docker Image
         run: |
-          docker load --input /tmp/${{ inputs.appName }}.tar
+          #docker load --input /tmp/${{ inputs.appName }}.tar
+          docker load --input /tmp/package.tar
           docker image ls -a
 
       - name: Scan Docker Image
