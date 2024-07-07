@@ -38,7 +38,7 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-        if: steps.cache-yarn.outputs.cache-hit != 'true'
+        #if: steps.cache-yarn.outputs.cache-hit != 'true'
 
       - name: Run Unit Tests
         run: yarn test
