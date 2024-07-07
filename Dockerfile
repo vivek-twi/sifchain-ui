@@ -19,11 +19,12 @@ RUN yarn
 
 COPY . /ui
 RUN yarn install
+RUN yarn build
 #RUN yarn core:build
 #RUN yarn app:build
 
-FROM flashspys/nginx-static
-RUN apk update && apk upgrade
-RUN rm -rf /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+#FROM flashspys/nginx-static
+#RUN apk update && apk upgrade
+#RUN rm -rf /etc/nginx/conf.d/default.conf
+#COPY nginx.conf /etc/nginx/conf.d/default.conf
 #COPY --from=builder  /app/dist /static
