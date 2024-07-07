@@ -39,7 +39,8 @@ jobs:
         run: yarn install
 
       - name: Run Unit Tests
-        run: yarn test --watchAll=false
+        run: yarn test
+        #--watchAll=false
         continue-on-error: true
         
 
