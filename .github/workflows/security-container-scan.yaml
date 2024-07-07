@@ -1,0 +1,72 @@
+name: Docker Container Scan
+on:
+  workflow_dispatch: {}
+  workflow_call:
+    inputs:
+      trigger-container-scan:
+        description: 'Enable / Disable Container Scanning'
+        required: false
+        type: boolean
+        default: true
+      image-name:
+        description: 'Docker image tag'
+        required: true
+        type: string
+      appName:
+        description: 'Name of the Application - for which CI is triggered'
+        required: true
+        type: string
+
+jobs:
+  container-scan:
+    name: Run Docker Container Scan
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }} # Run only for Main branch
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download Docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.appName }}
+          path: /tmp
+
+      - name: Load Docker Image
+        run: |
+          docker load --input /tmp/${{ inputs.appName }}.tar
+          docker image ls -a
+
+      - name: Scan Docker Image
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: 'image'
+          image-ref: ${{ inputs.image-name }}
+          format: 'table'
+          output: 'trivy-results.txt'
+          #exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+        continue-on-error: true # allow the stage to pass despite security issues, similar to "allow_failure: true" in GitLab
+
+      - name: Publish Trivy Output to Summary
+        run: |
+          if [[ -s trivy-results.txt ]]; then
+          {
+            echo "### Security Output"
+            echo "<details><summary>Click to expand Docker scanning results</summary>"
+            echo ""
+            echo '```docker-scan'
+            cat trivy-results.txt
+            echo '```'
+            echo "</details>"
+          } >> $GITHUB_STEP_SUMMARY
+          fi

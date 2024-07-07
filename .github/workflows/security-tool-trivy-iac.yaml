@@ -1,0 +1,43 @@
+name: trivy_scan_iac
+on:
+  workflow_call:
+    inputs:
+      run-trivy-iac:
+        description: 'Enable / Disable IAC Scanning'
+        required: true
+        type: boolean
+
+
+jobs:
+  trivy-analysis:
+    if: ${{ github.ref == 'refs/heads/main' }} && ${{ inputs.run-trivy-iac == true }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Run Trivy scanner
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: config
+          scan-ref: .
+          output: trivy.txt
+          severity: 'CRITICAL,HIGH'
+
+      - name: Publish Trivy Output to Summary                
+        run: |
+          if [[ -s trivy.txt ]]; then
+          {
+            echo "### Security Output"
+            echo "<details><summary>Click to expand IaC scanning results</summary>"
+            echo ""
+            echo '```IaC-scan'
+            cat trivy.txt
+            echo '```'
+            echo "</details>"
+          } >> $GITHUB_STEP_SUMMARY
+          fi
+            
