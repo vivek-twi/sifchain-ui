@@ -19,8 +19,8 @@ RUN yarn
 
 COPY . /ui
 RUN yarn install
-RUN yarn core:build
-RUN yarn app:build
+#RUN yarn core:build
+#RUN yarn app:build
 
 FROM flashspys/nginx-static
 RUN apk update && apk upgrade
