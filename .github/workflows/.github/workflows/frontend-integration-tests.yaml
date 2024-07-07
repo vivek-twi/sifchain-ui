@@ -1,0 +1,20 @@
+name: Frontend Integration Tests
+on:
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Name of the branch - to checkout code. By default, checkout will be from main branch'
+        required: false
+        type: string
+        default: 'main'
+
+jobs:
+  integration-tests:
+    name: Run Frontend Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+      - name: Run Tests
+        run: echo "Running Frontend Integration Tests"

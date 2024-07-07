@@ -1,0 +1,22 @@
+name: static_analysis
+on:
+  workflow_call:
+    inputs:
+      appName:
+        description: 'Name of the Application - for which CI is triggered'
+        required: true
+        type: string
+      branch:
+        description: 'Name of the branch - to checkout code. By default, checkout will be from main branch'
+        required: false
+        type: string
+        default: 'main'
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.runSast == true }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}

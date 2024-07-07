@@ -1,0 +1,61 @@
+name: Frontend CI Workflow
+on:
+  workflow_call:
+    inputs: # Input Parameters
+      appName:
+        description: 'Name of the Application - for which CI is triggered'
+        required: true
+        type: string
+      runTests:
+        description: 'Boolean Flag - to enable/disable tests run in the CI'
+        required: false
+        type: boolean
+        default: true
+      runSast:
+        description: 'Boolean Flag - to enable/disable SAST run in the CI'
+        required: false
+        type: boolean
+        default: true
+      runImageScan:
+        description: 'Boolean Flag - to enable/disable Image Scan run in the CI'
+        required: false
+        type: boolean
+        default: false
+      branch:
+        description: 'Name of the branch - to checkout code. By default, checkout will be from main branch'
+        required: false
+        type: string
+        default: 'main'
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  unit-test:
+    name: Run Frontend Unit Tests & Linting
+    uses: ./.github/workflows/frontend-unit-tests.yaml
+    with:
+      branch: ${{ inputs.branch }}
+
+  integration-test:
+    name: Run Frontend Integration Tests
+    uses: ./.github/workflows/frontend-integration-tests.yaml
+    with:
+      branch: ${{ inputs.branch }}
+
+  secrets-scanning:
+    name: Run Secrets Scan
+    uses: ./.github/workflows/security-secrets-scan.yaml
+    with:
+      branch: ${{ inputs.branch }}
+      trigger-secrets-scan: true
+    secrets: inherit
+
+  build-and-push:
+    name: Build Application Docker Image, Scan and Push to Github Packages
+    uses: ./.github/workflows/docker-build-and-push.yaml
+    needs: [secrets-scanning, unit-test]
+    with:
+      appName: ${{ inputs.appName }}
+      branch: ${{ inputs.branch }}
+    secrets: inherit
