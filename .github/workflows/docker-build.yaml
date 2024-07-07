@@ -1,7 +1,7 @@
 name: Build Docker Image
 on:
-  workflow_call:
   workflow_dispatch: {}
+  workflow_call:
     inputs:
       appName:
         description: 'Name of the Application - for which CI is triggered'
