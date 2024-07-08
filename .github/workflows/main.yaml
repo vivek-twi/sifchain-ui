@@ -24,7 +24,6 @@ jobs:
     uses: ./.github/workflows/deploy.yaml
     with:
       environment: dev
-      continue-on-error: true
 
   functional-tests:
     name: Run functional tests on the deployed Dev Environment
