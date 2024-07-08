@@ -1,5 +1,6 @@
 name: Frontend CI Workflow
 on:
+  workflow_dispatch: {}
   workflow_call:
     inputs: # Input Parameters
       appName:
