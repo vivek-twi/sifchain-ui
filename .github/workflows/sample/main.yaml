@@ -15,7 +15,7 @@ jobs:
     name: Run CI workflow for the Application
     uses: ./.github/workflows/frontend-ci.yaml
     with:
-      appName: vo-bff-springboot
+      appName: sifchain-ui
     secrets: inherit
 
   dev-deploy:
