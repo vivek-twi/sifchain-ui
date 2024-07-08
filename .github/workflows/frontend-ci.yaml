@@ -27,7 +27,7 @@ on:
         description: 'Name of the branch - to checkout code. By default, checkout will be from main branch'
         required: false
         type: string
-        default: 'main'
+        default: 'master'
 
 env:
   REGISTRY: ghcr.io
@@ -58,6 +58,7 @@ jobs:
     uses: ./.github/workflows/docker-build-and-push.yaml
     needs: [secrets-scanning, unit-test]
     with:
-      appName: ${{ inputs.appName }}
+      #appName: ${{ inputs.appName }}
+      appName: sifchain-ui
       branch: ${{ inputs.branch }}
     secrets: inherit
