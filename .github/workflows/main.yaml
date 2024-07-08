@@ -13,7 +13,7 @@ on:
 jobs:
   ci-workflow:
     name: Run CI workflow for the Application
-    uses: ./.github/workflows/backend-ci.yaml
+    uses: backend-ci.yaml
     with:
       appName: vo-bff-springboot
     secrets: inherit
