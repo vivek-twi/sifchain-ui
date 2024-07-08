@@ -36,14 +36,14 @@ jobs:
       - name: Download Docker image
         uses: actions/download-artifact@v4
         with:
-          #name: ${{ inputs.appName }}
-          name: app
+          name: ${{ inputs.appName }}
+          #name: app
           path: /tmp
 
       - name: Load Docker Image
         run: |
-          #docker load --input /tmp/${{ inputs.appName }}.tar
-          docker load --input /tmp/package.tar
+          docker load --input /tmp/${{ inputs.appName }}.tar
+          #docker load --input /tmp/package.tar
           docker image ls -a
 
       - name: Scan Docker Image
