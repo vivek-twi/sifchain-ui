@@ -1,0 +1,31 @@
+name: CI/CD Workflow for Application
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'releases/**'
+      - master
+    paths-ignore:
+      - 'docs/**'
+
+jobs:
+  ci-workflow:
+    name: Run CI workflow for the Application
+    uses: ./.github/workflows/backend-ci.yaml
+    with:
+      appName: vo-bff-springboot
+    secrets: inherit
+
+  dev-deploy:
+    name: Deploy Dev Environment for the Application
+    needs: [ci-workflow]
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      environment: dev
+
+  functional-tests:
+    name: Run functional tests on the deployed Dev Environment
+    needs: [dev-deploy]
+    uses: ./.github/workflows/functional-tests.yaml
