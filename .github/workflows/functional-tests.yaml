@@ -6,7 +6,7 @@ on:
         description: 'Name of the branch - to checkout code. By default, checkout will be from main branch'
         required: false
         type: string
-        default: 'main'
+        default: 'master'
 
 jobs:
   functional-tests:
