@@ -22,26 +22,19 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
 
-      #- name: Set up Node.js
-        #uses: actions/setup-node@v2
-        #with:
-          #node-version: '20'
-
-      - name: Use Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "20.x"
-          cache: yarn
-          cache-dependency-path: "**/yarn.lock"
+          node-version: '20'
 
-      #- name: Cache Yarn dependencies
-       # uses: actions/cache@v2
-        #id: cache-yarn
-        #with:
-         # path: ~/.cache/yarn
-          #key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          #restore-keys: |
-           # ${{ runner.os }}-yarn-
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v2
+        id: cache-yarn
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: yarn install
@@ -51,7 +44,6 @@ jobs:
         run: yarn test
         #--watchAll=false
         continue-on-error: true
-        
 
       - name: Run Linting
         run: yarn lint
