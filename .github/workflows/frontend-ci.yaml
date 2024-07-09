@@ -7,7 +7,6 @@ on:
         description: 'Name of the Application - for which CI is triggered'
         required: true
         type: string
-        default: "sifchain-ui"
       runTests:
         description: 'Boolean Flag - to enable/disable tests run in the CI'
         required: false
@@ -58,7 +57,6 @@ jobs:
     uses: ./.github/workflows/docker-build-and-push.yaml
     needs: [secrets-scanning, unit-test]
     with:
-      #appName: ${{ inputs.appName }}
-      appName: sifchain-ui
+      appName: ${{ inputs.appName }}
       branch: ${{ inputs.branch }}
     secrets: inherit
