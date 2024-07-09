@@ -15,7 +15,7 @@ COPY ./app/package.json /app/package.json
 COPY ./core/package.json /core/package.json
 #COPY ./core/yarn.lock /core/yarn.lock
 WORKDIR /ui
-RUN yarn
+#RUN yarn
 
 COPY . /ui
 #RUN yarn install
