@@ -34,7 +34,6 @@ jobs:
       - name: Push Docker image
         run: |
           docker load --input /tmp/${{ inputs.appName }}.tar
-          #docker load --input /tmp/package.tar
           docker image ls -a
           docker push --all-tags ghcr.io/${{ github.repository }}
 #      - name: 'Setup yq'
