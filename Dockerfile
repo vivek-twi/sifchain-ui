@@ -12,15 +12,15 @@ COPY ./package.json /package.json
 COPY ./yarn.lock /yarn.lock
 COPY ./app/package.json /app/package.json
 COPY ./app/yarn.lock /app/yarn.lock
-COPY ./core/package.json /core/package.json
-COPY ./core/yarn.lock /core/yarn.lock
+#COPY ./core/package.json /core/package.json
+#COPY ./core/yarn.lock /core/yarn.lock
 WORKDIR /ui
 RUN yarn
 
 COPY . /ui
 #RUN yarn install
 #RUN yarn build
-RUN yarn core:build
+#RUN yarn core:build
 RUN yarn app:build
 
 FROM flashspys/nginx-static
